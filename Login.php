@@ -12,14 +12,14 @@ include 'db_connection.php';
 <head>
 	<meta charset="utf-8">
 	<title>LOG IN</title>
-	<link rel="stylesheet" type="text/css" href="LoginStyle.css">
+	<!<link rel="stylesheet" type="text/css" href="LoginStyle.css">>
 </head>
 <body>
 	<form class="box" action="<?php echo $_SERVER['PHP_SELF'];?>" method="post">
 		<h1>LOGIN</h1>
-		<input type="text" name="uname" placeholder="Username" required>
-		<input type="password" name="pass" placeholder="Password" required>
-		<input type="submit" name="login" placeholder="Login">
+		<input type="text" name="uname" placeholder="Username" required></input><br><br>
+		<input type="password" name="pass" placeholder="Password" required></input><br>
+		<input type="submit" name="login" value="Login">
 	</form>
 </body>
 <?php

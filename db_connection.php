@@ -23,12 +23,14 @@
         $result = mysqli_query($conn,$sql);
         if($result)
         {
-            echo "The record has been inserted successfully!<br>";
+            //echo "The record has been inserted successfully!<br>";
+			return True;
         }
         else
         {
-            echo "The record was not inserted successfully.<br>";
-            mysqli_error($conn);
+          //  echo "The record was not inserted successfully.<br>";
+            
+			return False;
         }
     }
 
@@ -46,7 +48,7 @@
         else
         {
             
-            mysqli_error($conn);
+            echo mysqli_error($conn);
 			return False;
         }
     }
@@ -56,14 +58,17 @@
          {
              $sql = "UPDATE `employees` set `password`='$pass' WHERE `empid`='$empid'";
              $result = mysqli_query($conn,$sql);
-             if($result)
+			 $r=mysqli_affected_rows($conn);
+             if($r==1)
              {
+				 return True;
                  echo "The record has been updated successfully!<br>";
              }
              else
              {
-                 echo "The record was not updated successfully.<br>";
+                 //echo "The record was not updated successfully.<br>";
                  mysqli_error($conn);
+				 return False;
              }
          }
 
@@ -72,14 +77,18 @@
     {
         $sql = "UPDATE `employees` set `role`='$position' WHERE `empid`='$empid'";
         $result = mysqli_query($conn,$sql);
-        if($result)
+		 $r=mysqli_affected_rows($conn);
+        if($r==1)
         {
+			return True;
             echo "The record has been updated successfully!<br>";
         }
         else
         {
-            echo "The record was not updated successfully.<br>";
+            //echo "The record was not updated successfully.<br>";
+			
             mysqli_error($conn);
+			return False;
         }
     }
 
