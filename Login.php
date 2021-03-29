@@ -12,7 +12,7 @@ include 'db_connection.php';
 <head>
 	<meta charset="utf-8">
 	<title>LOG IN</title>
-	<!<link rel="stylesheet" type="text/css" href="LoginStyle.css">>
+	<link rel="stylesheet" type="text/css" href="LoginStyle.css">
 </head>
 <body>
 	<form class="box" action="<?php echo $_SERVER['PHP_SELF'];?>" method="post">
