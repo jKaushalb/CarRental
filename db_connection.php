@@ -48,7 +48,7 @@
         else
         {
             
-            echo mysqli_error($conn);
+           
 			return False;
         }
     }
@@ -108,16 +108,214 @@
 			return -1; //if connection fails
         }
     }
-
-    // To add to users to the database
-    function Newusers($conn,$custname,$custmobno,$custlicno)
+	/////////////////////////////////////////////////////////////////////////
+	
+	 function Insertcars($conn,$brand,$model,$numplate,$price,$desc,$img)
     {
-
+        $sql = "INSERT INTO `cars` ( `brandname`, `modelname`,  `numberplate`,  `price`, `description`, `image`, `rented`) VALUES ('$brand','$model','$numplate','$price', '$desc', '$img',0)";
+        $result = mysqli_query($conn,$sql);
+        $flag = mysqli_affected_rows($conn);
+        if($flag == 1)
+        {
+			return True;
+            echo "The record has been inserted successfully!<br>";
+        }
+        else
+        {
+            //echo "The record was not inserted successfully.<br>";
+            mysqli_error($conn);
+			return False;
+        }
     }
 
-    //
-    function ()
+    // To delete a car from the database
+    function Deletecars($conn,$numplate)
     {
-
+        $sql = "DELETE FROM `cars` WHERE `rented` != 1 AND `numberplate` = '$numplate'";
+        $result = mysqli_query($conn,$sql);
+        $flag = mysqli_affected_rows($conn);
+        if($flag == 1)
+        {
+           // echo "The record has been deleted successfully!<br>";
+		   return True;
+        }
+        else
+        {
+           // echo "The record was not deleted successfully.<br>";
+            mysqli_error($conn);
+			return False;
+        }
     }
+
+    // To find the car details
+    function Findcars($conn,$numplate)
+    {
+        $sql = "SELECT * FROM `cars` WHERE `rented` != 1 AND `numberplate` = '$numplate'";
+        $result = mysqli_query($conn,$sql);
+        $flag = mysqli_affected_rows($conn);
+        if($flag == 1)
+        {
+            echo "Data fetched successfully!<br>";
+        }
+        else
+        {
+            echo "Data could not be fetched, either the car is on rent or does not exist.<br>";
+            mysqli_error($conn);
+        }
+    }
+
+    // To update car details without image
+    function Updatecarswi($conn,$brand,$model,$numplate,$price,$desc)
+    {
+        $sql = "UPDATE  `cars` set `brandname` = '$brand', `modelname` = '$model', `price` = '$price', `description` = '$desc' WHERE `rented` != 1 AND `numberplate` = '$numplate'";
+        $result = mysqli_query($conn,$sql);
+        $flag = mysqli_affected_rows($conn);
+        if($flag == 1)
+        {
+            //echo "The record has been updated successfully!<br>";
+			return true;
+        }
+        else
+        {
+           // echo "The record was not updated successfully.<br>";
+            mysqli_error($conn);
+			return false;
+        }
+    }
+
+    // To update car details with image
+    function Updatecarsi($conn,$brand,$model,$numplate,$price,$desc,$img)
+    {
+        $sql = "UPDATE  `cars` set `brandname` = '$brand', `modelname` = '$model', `price` = '$price', `description` = '$desc', `image` = '$img' WHERE `rented` != 1 AND `numberplate` = '$numplate'";
+        $result = mysqli_query($conn,$sql);
+        $flag = mysqli_affected_rows($conn);
+        if($flag == 1)
+        {
+            //echo "The record has been updated successfully!<br>";
+			return true;
+        }
+        else
+        {
+           // echo "The record was not updated successfully.<br>";
+            mysqli_error($conn);
+			return false;
+        }
+    }
+
+    // To insert new user database
+    function Insertusers($conn,$clientname,$clientmobile,$clientlicense)
+    {
+        $sql = "INSERT INTO `users` ( `clientname`, `clientmobile`,  `clientlicense`) VALUES ('$clientname', '$clientmobile', '$clientlicense')";
+        $result = mysqli_query($conn,$sql);
+        $flag = mysqli_affected_rows($conn);
+        if($flag == 1)
+        {
+            echo "The record has been inserted successfully!<br>";
+        }
+        else
+        {
+            echo "The record was not inserted successfully.<br>";
+            mysqli_error($conn);
+        }
+    }
+
+    // To find the users data
+    function Findusers($conn,$clientlicense)
+    {
+        $sql = "SELECT * FROM `users` WHERE `clientlicense` = '$clientlicense'";
+        $result = mysqli_query($conn,$sql);
+        $flag = mysqli_affected_rows($conn);
+        if($flag == 1)
+        {
+            echo "Data fetched successfully!<br>";
+        }
+        else
+        {
+            echo "Data could not be fetched, either the car is on rent or does not exist.<br>";
+            mysqli_error($conn);
+        }
+    }
+
+
+    // To update the user data
+    function Updateusers($conn,$clientname,$clientmobile,$clientlicense)
+    {
+        $sql = "UPDATE `users` set `clientname` = '$clientname', `clientmobile` = '$clientmobile' WHERE `clientlicense` = '$clientlicense'";
+        $result = mysqli_query($conn,$sql);
+        $flag = mysqli_affected_rows($conn);
+        if($flag == 1)
+        {
+           // echo "The record has been inserted successfully!<br>";
+		   return True;
+        }
+        else
+        {
+          //  echo "The record was not inserted successfully.<br>";
+            mysqli_error($conn);
+			return False;
+        }
+    }
+	
+	
+	
+	
+	
+	////////////////////////////////////////////////////////////////////////
+	function Insertcardata($conn,$numberplate,$carname,$mileage,$kms)
+    {
+        $sql = "INSERT INTO `carsadd` ( `numberplate`, `carname`, `mileage`, `kms`) VALUES ('$numberplate','$carname','$mileage','$kms')";
+        $result = mysqli_query($conn,$sql);
+        $flag = mysqli_affected_rows($conn);
+        if($flag == 1)
+        {
+            return True;
+            echo "The record has been inserted successfully!<br>";
+        }
+        else
+        {
+            return False;
+            echo "The record was not inserted successfully.<br>";
+            mysqli_error($conn);
+        }
+    }
+
+    // TO update car data for addcars
+    function Updatecardata($conn,$numberplate,$kms,$stars,$served)
+    {
+        $sql = "UPDATE  `carsadd` set `kms` = '$kms', `stars` = '$stars', `served` = '$served' WHERE `numberplate` = '$numberplate'";
+        $result = mysqli_query($conn,$sql);
+        $flag = mysqli_affected_rows($conn);
+        if($flag == 1)
+        {
+            //return True;
+            echo "The record has been updated successfully!<br>";
+        }
+        else
+        {
+            //return False;
+            echo "The record was not updated successfully.<br>";
+            mysqli_error($conn);
+        }
+    }
+
+    // To fetch car data for addcars
+    function Displaycardata($conn,$numberplate)
+    {
+        $sql = "SELECT * FROM `carsadd` WHERE `numberplate` = '$numberplate'";
+        $result = mysqli_query($conn,$sql);
+        $flag = mysqli_affected_rows($conn);
+        if($flag == 1)
+        {
+            //return True;
+            echo "Data fetched successfully!<br>";
+        }
+        else
+        {
+            //return False;
+            echo "Data could not be fetched, either the car is on rent or does not exist.<br>";
+            mysqli_error($conn);
+        }
+    }
+	
+	
 ?>

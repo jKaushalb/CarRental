@@ -45,7 +45,9 @@ include "db_connection.php";
 			
 			
 			$conn=OpenCon();
-			
+			?>
+			<div>
+			<?php
 			if(Deleteemployees($conn,$eid,$uname))
 			{
 				echo "Record with $eid and $uname is deleted<br>";
@@ -53,12 +55,15 @@ include "db_connection.php";
 			else
 			{
 				mysqli_error($conn);
+				
 				echo "Error occured<br>";
+				echo "Record Deosnot Exist<br>";
 			}
 			CloseCon($conn);
 		}
 		
 	}
 ?>
+</div>
 </body>
 </html>
