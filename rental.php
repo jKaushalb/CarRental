@@ -106,6 +106,8 @@ $car_ex="";
 				{
 					
 					echo "Car with $numplate rented Successfullyt to customer with $lno license no.<br>";
+					sleep(3); //after 3 sec redirection will be happen
+					header("Location:manager.php");
 				}
 				else
 				{
