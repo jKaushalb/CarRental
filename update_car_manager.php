@@ -24,19 +24,19 @@ include 'gvar.php';
         <div class="form">
            <div class="inputfield">
               <label>Brand</label>
-              <input type="text" name="brand" class="input">
+              <input type="text" name="brand" value="<?php if(isset($_REQUEST['brand'])){ echo $_REQUEST['brand'];}?>" class="input">
            </div>
            <div class="inputfield">
               <label>Model Name</label>
-              <input type="text" name="model" class="input">
+              <input type="text" name="model" value="<?php if(isset($_REQUEST['model'])){ echo $_REQUEST['model'];}?>"class="input">
            </div>  
             <div class="inputfield">
               <label>Number Plate</label>
-              <input type="text" name="numplate" class="input">
+              <input type="text" name="numplate" value="<?php if(isset($_REQUEST['numplate'])){ echo $_REQUEST['numplate'];}?>" class="input">
            </div>  
            <div class="inputfield">
               <label>Price</label>
-              <input type="number" name="price" class="input">
+              <input type="number" name="price" value="<?php if(isset($_REQUEST['price'])){ echo $_REQUEST['price'];}?>"class="input">
            </div>
            <div class="inputfield">
               <label>Include Image</label>
@@ -53,7 +53,7 @@ include 'gvar.php';
             </div>
             <div class="inputfield">
               <label>Description</label>
-              <textarea class="textarea" name="desc"></textarea>
+              <textarea class="textarea" name="desc" ><?php if(isset($_REQUEST['desc'])){ echo $_REQUEST['desc'];}?></textarea>
             </div> 
             <div class="inputfield terms">
               <label class="check">
@@ -68,34 +68,29 @@ include 'gvar.php';
         </div>
     </form>
 	
-	<?php	
 	
-	}
-	else
-		echo "you got anothorized access!<br>";
-	?>
 <div>
 <?php
 
-if($_SERVER['REQUEST_METHOD']=='POST')
+if(isset($_SERVER['REQUEST_METHOD']))
 {
 	
-	if(isset($_POST['update']))
+	if(isset($_REQUEST['update']))
 	{
-		if(isset($_POST['brand'])||isset($_POST['price'])||isset($_POST['model'])||isset($_POST['numplate'])||isset($_POST['imgpath'])||isset($_POST['desc']))
+		if(isset($_REQUEST['brand'])||isset($_REQUEST['price'])||isset($_REQUEST['model'])||isset($_REQUEST['numplate'])||isset($_REQUEST['imgpath'])||isset($_REQUEST['desc']))
 		{
-			$brand=$_POST['brand'];
-			$model=$_POST['model'];
-			$numplate=$_POST['numplate'];
-			$radio=$_POST['inimage'];
+			$brand=$_REQUEST['brand'];
+			$model=$_REQUEST['model'];
+			$numplate=$_REQUEST['numplate'];
+			$radio=$_REQUEST['inimage'];
 			$path="";
 			if($radio=='checked')
 			{
-				$path=$_POST['imgpath'];
+				$path=$_REQUEST['imgpath'];
 			}
 			
-			$desc=$_POST['desc'];
-			$price=$_POST['price'];
+			$desc=$_REQUEST['desc'];
+			$price=$_REQUEST['price'];
 			
 			$conn=OpenCon();
 			
@@ -154,6 +149,13 @@ if($_SERVER['REQUEST_METHOD']=='POST')
         document.getElementById("imagefield").style.visibility="hidden";
     }
   </script>
+
+<?php	
+	
+	}
+	else
+		echo "you got anothorized access!<br>";
+	?>
 
 </body>
 </html>

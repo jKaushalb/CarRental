@@ -12,7 +12,7 @@ include 'db_connection.php';
 <head>
 	<meta charset="utf-8">
 	<title>LOG IN</title>
-	<link rel="stylesheet" type="text/css" href="LoginStyle.css">
+	<!<link rel="stylesheet" type="text/css" href="LoginStyle.css">
 </head>
 <body>
 	<form class="box" action="<?php echo $_SERVER['PHP_SELF'];?>" method="post">
@@ -36,12 +36,15 @@ if($_SERVER['REQUEST_METHOD']=='POST')
 			$conn=OpenCon();  #openening database connection to check credentails
 			
 			$role=login($conn,$uname,$pass);
-			echo $uname." ".$pass." ".$role."<br>";
+			$ed=eid($conn,$uname,$pass);
+			echo $uname." ".$pass." ".$role." ".$ed."<br>";
 			if($role>=0)
 			{
 				$_SESSION["role"]=$role;
 				$_SESSION["uname"]=$uname;
 				$_SESSION["pass"]=$pass;
+				$_SESSION['eid']=$ed;
+				
 				if($role==1)
 				{
 					CloseCon($conn);

@@ -34,12 +34,18 @@ include 'gvar.php';
 <html>
 <head>
 <style>
-.outer.*
+.outer
 {
 	background: #073b4c;
 	text-align: center;
 	border-radius: 25px;
 
+}
+.inner
+{
+	background: #FFFFFF;
+	border-solid : 5px;
+	padding : 10px;
 }
 </style>
 </head>
@@ -54,7 +60,7 @@ include 'gvar.php';
 		?>
 
 <div class="outer" align="center">
-<table>
+<table border=3px>
 <thead>
 <th><strong>DATA<br><br><br></strong></th>
 </thead>
@@ -65,19 +71,23 @@ include 'gvar.php';
 	{
 		?>
 		<div class="inner">
-		<tr background="green"> <td align = "center"><img src="image/<?php echo $row['image']; ?>"><br>
+		<tr> <td align = "center"><img src="image/<?php echo $row['image']; ?>"><br>
 		<strong>Car Name:</strong>&nbsp;<?php echo $row["brandname"]; ?>&nbsp; <br>
 		<strong>Model Name:</strong>&nbsp;<?php echo $row["modelname"]; ?>&nbsp; <br>
 		<strong>Number Plate:</strong>&nbsp;<?php echo $row["numberplate"]; ?><br>
 		<strong>Price:</strong>&nbsp;&#8377;&nbsp;<?php echo $row["price"]; ?><br>
 		<strong>Description:</strong><br><?php echo $row["description"]; ?><br>
-		<br>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;<input type = "submit" value = "Book Now"></td>
+		
+		<button  name="<?php echo "update".$i?>" ><a href="./update_car_manager.php?brand=<?php echo $row['brandname'];?>&model=<?php echo $row['modelname'];?>&numplate=<?php echo $row['numberplate'];?>&price=<?php echo $row['price'];?>&desc=<?php echo urlencode($row['description']); // as it will contain blank spcaces?>">update</a></button><br><br>
+		<br>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;<input type = "submit"  value = "Book Now"></td>
 		
 		</tr>
 		<tr><br></tr>
 		
 		</div>
-	<?php } ?>
+	<?php
+	}
+	?>
 </tbody>
 </table>
 </div>

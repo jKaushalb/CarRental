@@ -58,12 +58,7 @@ include 'gvar.php';
             </div>
         </div>
     </div>	
-	<?php	
 	
-	}
-	else
-		echo "you got anothorized access!<br>";
-	?>
 <div>
 <?php
 
@@ -103,6 +98,13 @@ if($_SERVER['REQUEST_METHOD']=='POST')
 
 
 ?>
+
+<?php	
+	
+	}
+	else
+		echo "you got anothorized access!<br>";
+	?>
 	
 </div>
 </body>

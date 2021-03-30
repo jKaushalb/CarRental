@@ -67,7 +67,7 @@
              else
              {
                  //echo "The record was not updated successfully.<br>";
-                 mysqli_error($conn);
+                 echo mysqli_error($conn);
 				 return False;
              }
          }
@@ -87,11 +87,27 @@
         {
             //echo "The record was not updated successfully.<br>";
 			
-            mysqli_error($conn);
+            echo mysqli_error($conn);
 			return False;
         }
     }
-
+	function eid($conn,$uname,$pass)
+	{
+		$sql = "SELECT `empid` FROM `employees` WHERE `username`='$uname' AND `password` = '$pass'";  //updated
+        $result = mysqli_query($conn,$sql);
+		$flag = mysqli_affected_rows($conn);
+        if($flag == 1)
+        {
+			return (int)mysqli_fetch_array($result)[0];
+            echo "The record has been inserted successfully!<br>";
+        }
+        else
+        {
+            //echo "The record was not inserted successfully.<br>";
+            echo mysqli_error($conn);
+			return False;
+        }
+	}
     function Login($conn,$uname,$pass)
     {
         $sql = "SELECT `role` FROM `employees` WHERE `username`='$uname' AND `password` = '$pass'";  //updated
@@ -99,7 +115,7 @@
         if($result)
         {
             echo "Login Successful!<br>";
-			return (int)$result; // returning the role;      //updated
+			return (int)mysqli_fetch_array($result)[0]; // returning the role;      //updated
         }
         else
         {
@@ -123,7 +139,7 @@
         else
         {
             //echo "The record was not inserted successfully.<br>";
-            mysqli_error($conn);
+            echo mysqli_error($conn);
 			return False;
         }
     }
@@ -142,7 +158,7 @@
         else
         {
            // echo "The record was not deleted successfully.<br>";
-            mysqli_error($conn);
+            echo mysqli_error($conn);
 			return False;
         }
     }
@@ -155,12 +171,14 @@
         $flag = mysqli_affected_rows($conn);
         if($flag == 1)
         {
+			return $result;
             echo "Data fetched successfully!<br>";
         }
         else
         {
-            echo "Data could not be fetched, either the car is on rent or does not exist.<br>";
-            mysqli_error($conn);
+            //echo "Data could not be fetched, either the car is on rent or does not exist.<br>";
+            echo mysqli_error($conn);
+			return null;
         }
     }
 
@@ -178,7 +196,7 @@
         else
         {
            // echo "The record was not updated successfully.<br>";
-            mysqli_error($conn);
+            echo mysqli_error($conn);
 			return false;
         }
     }
@@ -197,7 +215,7 @@
         else
         {
            // echo "The record was not updated successfully.<br>";
-            mysqli_error($conn);
+            echo mysqli_error($conn);
 			return false;
         }
     }
@@ -210,29 +228,52 @@
         $flag = mysqli_affected_rows($conn);
         if($flag == 1)
         {
-            echo "The record has been inserted successfully!<br>";
+            //echo "The record has been inserted successfully!<br>";
+			return true;
         }
         else
         {
-            echo "The record was not inserted successfully.<br>";
-            mysqli_error($conn);
+           // echo "The record was not inserted successfully.<br>";
+            echo  mysqli_error($conn);
+			return false;
         }
     }
 
+	function Checkusers($conn,$clientlicense)
+    {
+        $sql = "SELECT * FROM `users` WHERE `clientlicense` = '$clientlicense'";
+        $result = mysqli_query($conn,$sql);
+		
+		//echo mysqli_fetch_assoc($result)[0];
+       $flag = mysqli_affected_rows($conn);
+        if($flag==1)
+        {
+           // echo "Data fetched successfully!<br>";
+		   return True;
+        }
+        else
+        {
+          //  echo "Data could not be fetched, either the car is on rent or does not exist.<br>";
+            echo mysqli_error($conn);
+			return False;
+        }
+    }
     // To find the users data
     function Findusers($conn,$clientlicense)
     {
         $sql = "SELECT * FROM `users` WHERE `clientlicense` = '$clientlicense'";
         $result = mysqli_query($conn,$sql);
-        $flag = mysqli_affected_rows($conn);
-        if($flag == 1)
+       $flag = mysqli_affected_rows($conn);
+        if($flag==1)
         {
-            echo "Data fetched successfully!<br>";
+           // echo "Data fetched successfully!<br>";
+		   return $result;
         }
         else
         {
-            echo "Data could not be fetched, either the car is on rent or does not exist.<br>";
-            mysqli_error($conn);
+          //  echo "Data could not be fetched, either the car is on rent or does not exist.<br>";
+            echo mysqli_error($conn);
+			return null;
         }
     }
 
@@ -251,7 +292,7 @@
         else
         {
           //  echo "The record was not inserted successfully.<br>";
-            mysqli_error($conn);
+            echo mysqli_error($conn);
 			return False;
         }
     }
@@ -275,7 +316,7 @@
         {
             return False;
             echo "The record was not inserted successfully.<br>";
-            mysqli_error($conn);
+            echo mysqli_error($conn);
         }
     }
 
@@ -294,7 +335,7 @@
         {
             //return False;
             echo "The record was not updated successfully.<br>";
-            mysqli_error($conn);
+            echo mysqli_error($conn);
         }
     }
 
@@ -304,18 +345,112 @@
         $sql = "SELECT * FROM `carsadd` WHERE `numberplate` = '$numberplate'";
         $result = mysqli_query($conn,$sql);
         $flag = mysqli_affected_rows($conn);
+		//echo mysqli_fetch_array($result)[0];
+		
         if($flag == 1)
         {
-            //return True;
+            return $result;
             echo "Data fetched successfully!<br>";
         }
         else
         {
-            //return False;
-            echo "Data could not be fetched, either the car is on rent or does not exist.<br>";
-            mysqli_error($conn);
+            //
+           // echo "Data could not be fetched, either the car is on rent or does not exist.<br>";
+            echo mysqli_error($conn);
+			return null;
         }
     }
+	
+	############################################################################################
+	
+	function Givenrentals($conn,$clientname,$clientmobile,$clientlicense,$numberplate,$empid,$kms,$dorental,$doreturn,$advance,$total)
+    {
+        $sql = "INSERT INTO `rentals` (`rentername`, `rentermobile`, `renterlicense`, `numberplate`, `empid`, `kms`, `dorental`, `doreturn`, `advance`, `total`) VALUES ('$clientname', '$clientmobile', '$clientlicense', '$numberplate', '$empid', '$kms', '$dorental', '$doreturn', '$advance', '$total')";
+        $result = mysqli_query($conn,$sql);
+        $flag = mysqli_affected_rows($conn);
+        $sql = "UPDATE `cars` set `rented` = 1 WHERE `numberplate` = '$numberplate'";
+        $result2 = mysqli_query($conn,$sql);
+        $flag2 = mysqli_affected_rows($conn);
+        if($flag == 1 && $flag2 == 1)
+        {
+            return True;
+            echo "The record has been inserted successfully!<br>";
+        }
+        else
+        {
+            
+           // echo "The record was not inserted successfully.<br>";
+            echo mysqli_error($conn);
+			return False;
+        }
+    }
+
+    // To update the car rental data in rentals table (Only accessible by Manager/Admin)
+    function Overwriterentals($conn,$empid,$billno,$kms,$dorental,$doreturn,$advance,$total)
+    {
+        $sql = "UPDATE `rentals` set `empid` = '$empid', `kms` = '$kms', `dorental` = '$dorental', `doreturn` = '$doreturn', `advance` = '$advance', `total` = '$total' WHERE `billno` = '$billno'";
+        $result = mysqli_query($conn,$sql);
+        $flag = mysqli_affected_rows($conn);
+        if($flag == 1)
+        {
+            return True;
+            echo "The record has been updated successfully!<br>";
+        }
+        else
+        {
+            //
+           // echo "The record was not updated successfully.<br>";
+            echo mysqli_error($conn);
+			return False;
+        }
+    }
+
+    // To create final bill for rental in billing database
+    function Bill($conn,$billno,$rentername,$rentermobile,$renterlicense,$numberplate,$rentalempid,$returnempid,$rentalkms,$returnkms,$dorental,$doreturn,$doreturnact,$advance,$total,$damage,$finaltotal)
+    {
+        $sql = "INSERT INTO `billing` (`billno`, `rentername`, `rentermobile`, `renterlicense`, `numberplate`, `rentalempid`, `returnempid`, `rentalkms`, `returnkms`, `dorental`, `doreturn`, `doreturnact`, `advance`, `total`, `damage`, `finaltotal`) VALUES ('$billno','$rentername','$rentermobile','$renterlicense','$numberplate','$rentalempid','$returnempid','$rentalkms','$returnkms','$dorental','$doreturn','$doreturnact','$advance','$total','$damage','$finaltotal')";
+        $result = mysqli_query($conn,$sql);
+        $flag = mysqli_affected_rows($conn);
+        $sql = "UPDATE `cars` set `rented` = 0 WHERE `numberplate` = '$numberplate'";
+        $result2 = mysqli_query($conn,$sql);
+        $flag2 = mysqli_affected_rows($conn);
+        if($flag == 1 && $flag2 == 1)
+        {
+            return True;
+            echo "The record has been inserted successfully!<br>";
+        }
+        else
+        {
+            //return False;
+            //echo "The record was not inserted successfully.<br>";
+            echo mysqli_error($conn);
+			return False;
+        }
+    }
+
+    // To update final bill (Only accessible by Manager/Admin)
+    function Updatebill($conn,$billno,$returnempid,$returnkms,$doreturnact,$damage,$finaltotal)
+    {
+        $sql = "UPDATE `billing` set `returnempid` = '$returnempid', `returnkms` = '$returnkms', `doreturnact` = '$doreturnact', `damage` = '$damage', `finaltotal` = '$finaltotal' WHERE `billno` = '$billno'";
+        $result = mysqli_query($conn,$sql);
+        $flag = mysqli_affected_rows($conn);
+        if($flag == 1)
+        {
+            return True;
+            echo "The record has been updated successfully!<br>";
+        }
+        else
+        {
+            //return False;
+            //echo "The record was not updated successfully.<br>";
+            echo mysqli_error($conn);
+			return False;
+        }
+    }
+	
+	
+	
+	##############################################################################################
 	
 	
 ?>
