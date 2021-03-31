@@ -20,7 +20,7 @@ include 'gvar.php';
 
 <?php 
 
-	if(isset($_SESSION['role'])&&($_SESSION['role']==1 || $_SESSION['role']==0 ))
+	if(isset($_SESSION['role'])&&($_SESSION['role']==$manager || $_SESSION['role']==$employee ))
 	{
 		if(isset($_REQUEST['numplate'])) // as first time we reach here it has numplate in ints url;
 		$_SESSION['numplate']=$_REQUEST['numplate'];

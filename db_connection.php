@@ -314,9 +314,10 @@
         }
         else
         {
+			echo mysqli_error($conn);
             return False;
             echo "The record was not inserted successfully.<br>";
-            echo mysqli_error($conn);
+            
         }
     }
 
@@ -362,7 +363,24 @@
     }
 	
 	############################################################################################
-	
+	function getrentaldata($conn,$numplt)
+	{
+		 $sql = "SELECT * FROM `rentals` WHERE `numberplate` = '$numplt'";
+        $result = mysqli_query($conn,$sql);
+        $flag = mysqli_affected_rows($conn);
+		//echo mysqli_fetch_array($result)[0];
+        if($flag == 1)
+        {
+            return $result;
+            echo "Data fetched successfully!<br>";
+        }
+        else
+        {
+           // echo "Data could not be fetched, either the car is on rent or does not exist.<br>";
+            echo mysqli_error($conn);
+			return null;
+		}
+	}
 	function Givenrentals($conn,$clientname,$clientmobile,$clientlicense,$numberplate,$empid,$kms,$dorental,$doreturn,$advance,$total)
     {
         $sql = "INSERT INTO `rentals` (`rentername`, `rentermobile`, `renterlicense`, `numberplate`, `empid`, `kms`, `dorental`, `doreturn`, `advance`, `total`) VALUES ('$clientname', '$clientmobile', '$clientlicense', '$numberplate', '$empid', '$kms', '$dorental', '$doreturn', '$advance', '$total')";

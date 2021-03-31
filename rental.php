@@ -17,7 +17,7 @@ $car_ex="";
 </head>
 <body>
 <?php 
-	if(isset($_SESSION['role'])&&($_SESSION['role']==1 || $_SESSION['role']==0 ))
+	if(isset($_SESSION['role'])&&($_SESSION['role']==$manager || $_SESSION['role']==$employee ))
 	{
 		$lno=$_SESSION['licno'];
 		$numplate=$_SESSION['numplate'];
@@ -106,6 +106,16 @@ $car_ex="";
 				{
 					
 					echo "Car with $numplate rented Successfullyt to customer with $lno license no.<br>";
+					sleep(3); //after 3 sec redirection will be happen
+					if($_SESSION('eid')==1)
+					{
+						header("Location:manager.php");
+					}
+					else
+					{
+						header("Location:employee.php");
+					}
+					
 				}
 				else
 				{

@@ -7,30 +7,8 @@ include 'gvar.php';
 <?php
 
 	
-	function findcar($conn,$numplt)
-	{
-		$sql = "SELECT * FROM `cars` WHERE `numberplate` = '$numplt'";
-		$result = mysqli_query($conn,$sql);
-		$arr=array();
-		while($row = mysqli_fetch_assoc($result))
-		{
-			array_push($arr,$row);
-			//echo $row['numberplate']."<br>";
-			
-		}
-		if(count($arr))
-		{
-			return $arr;
-		}
-		else
-		{
-			echo "No data found";
-			mysqli_error($conn);
-			return null;
-		}
-		
-	}
-	function display_non_rentedcars($conn)
+
+	function display_rentedcars($conn)
 	{
 		$sql = "SELECT * FROM `cars` WHERE `rented` != 1";
         $result = mysqli_query($conn,$sql);
@@ -47,9 +25,9 @@ include 'gvar.php';
 		}
 		else
 		{
-			//echo "ALL CARS ARE RENTED NO DATA FOUND<br>";
+			echo "No data found";
 			mysqli_error($conn);
-			return null;
+			return false;
 		}
 	}
 	function display_cars($conn)
@@ -89,7 +67,7 @@ include 'gvar.php';
 <body>
 <div class="menu">
 <?php 
-	if(isset($_SESSION['role'])&&$_SESSION['role']==$manager)
+	if(isset($_SESSION['role'])&&$_SESSION['role']==1)
 	{
 		?>
 	<button ><a href="./insert_manager.php">Insert Employee</a></button>
@@ -99,13 +77,6 @@ include 'gvar.php';
 	<button ><a href="./insert_car_manager.php">Insert Car</a></button>
 	<button ><a href="./update_car_manager.php">Update Car</a></button>
 	<button ><a href="./delete_car_manager.php">Delete Car</a></button>
-	<div>
-	
-	<form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']);?>" method="post"> 
-	<button type='submit' name='dis_all'>Display All Cars</button>&nbsp;&nbsp;&nbsp;<button type='submit' name='dis_rent'>Display Non Rented</button>&nbsp;&nbsp;&nbsp;<input type='text' name='numplt' placeholder="Enter Numberplate " ></input>&nbsp;&nbsp;&nbsp;<button type='submit' name="findcar">FindCar</button>
-		
-	</form>
-	</div>
 	
 	
 	
@@ -115,39 +86,11 @@ include 'gvar.php';
 
 
 <?php
-
 	$conn=OpenCon();
-	$c=1;
-	$a=display_non_rentedcars($conn);
-	if(isset($_SERVER['REQUEST_METHOD']))
-	{
-		if(isset($_REQUEST['dis_all']))
-		{
-			$a=display_cars($conn);
-			$c=0;
-		}
-		else if(isset($_REQUEST['findcar']))
-		{
-			if(isset($_REQUEST['numplt']))
-			{
-				$num=$_REQUEST['numplt'];
-				$a=findcar($conn,$num);
-				$c=0;
-			}
-			else
-			{
-				echo "Please Enter Numberplate<br> ";
-			}
-		}
-		else if(isset($_REQUEST['dis_ren']))
-		{
-			$c=1;
-			$a=display_non_rentedcars($conn);
-		}
-	}
-		
+	$a=display_cars($conn);
 	
-	if(isset($a))
+
+	if(count($a))
 	{
 		?>
 
@@ -173,8 +116,7 @@ include 'gvar.php';
 			
 			<button  name="<?php echo "update".$i?>" ><a href="./update_car_manager.php?brand=<?php echo $row['brandname'];?>&model=<?php echo $row['modelname'];?>&numplate=<?php echo $row['numberplate'];?>&price=<?php echo $row['price'];?>&desc=<?php echo urlencode($row['description']); // as it will contain blank spcaces?>">update</a></button>
 			&emsp;<button name="delete" ><a href="./delete_car_manager.php?numplate=<?php echo $row['numberplate'] ;?>">delete</a></button>
-			<br><br>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
-			<?php if($c==1){?><button ><a href="./insert_user.php?numplate=<?php echo $row['numberplate'] ;?> ">Book Now</button><?php }?></td>
+			<br><br>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;<button ><a href="./insert_user.php?numplate=<?php echo $row['numberplate'] ;?> ">Book Now</button></td>
 			
 			</tr>
 			<br>
@@ -193,7 +135,7 @@ include 'gvar.php';
 		}
 		else 
 		{
-			echo "No data available";
+			echo "no data available";
 		}
 ?>
 

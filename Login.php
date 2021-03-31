@@ -12,7 +12,7 @@ include 'db_connection.php';
 <head>
 	<meta charset="utf-8">
 	<title>LOG IN</title>
-	<!<link rel="stylesheet" type="text/css" href="LoginStyle.css">
+	<link rel="stylesheet" type="text/css" href="LoginStyle.css">
 </head>
 <body>
 	<form class="box" action="<?php echo $_SERVER['PHP_SELF'];?>" method="post">
@@ -48,12 +48,14 @@ if($_SERVER['REQUEST_METHOD']=='POST')
 				if($role==1)
 				{
 					CloseCon($conn);
+					sleep(2);//after 2 sec redirection will be happen
 					header ("Location: manager.php");
 					
 				}
 				else
 				{
-					header ("Location: emplyoee.php");
+					sleep(2);
+					header ("Location: employee.php");
 				}
 				
 			}

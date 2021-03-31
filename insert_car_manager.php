@@ -14,7 +14,7 @@ include 'gvar.php';
 </head>
 <body>
 <?php 
-	if(isset($_SESSION['role'])&&$_SESSION['role']==1)
+	if(isset($_SESSION['role'])&&$_SESSION['role']==$manager  )
 	{
 		?>
 	  <form class="box" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']);?>" method="post">
@@ -46,6 +46,12 @@ include 'gvar.php';
               <label>Description</label>
               <textarea class="textarea" name='desc'></textarea>
             </div> 
+			<div class="inputfield">
+              <label>Kms</label>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+              <input type="number" name='kms' class="input" required>&emsp;&emsp;&emsp;
+              <label>Mileage</label>&emsp;&emsp;
+              <input type="number" name='mileage' class="input" required>
+           </div>
             <div class="inputfield terms">
               <label class="check">
                 <input type="checkbox" required>
@@ -57,7 +63,7 @@ include 'gvar.php';
               <input type="submit" name='register' value="Register" class="btn"></inp>
             </div>
         </div>
-    </div>	
+    </form>
 	
 <div>
 <?php
@@ -75,14 +81,17 @@ if($_SERVER['REQUEST_METHOD']=='POST')
 			$path=$_POST['imgpath'];
 			$desc=$_POST['desc'];
 			$price=$_POST['price'];
+			$kms=$_POST['kms'];
+			$mileage=$_POST['mileage'];
 			
 			$conn=OpenCon();
 			$flag=Insertcars($conn,$brand,$model,$numplate,$price,$desc,$path);
-			if($flag)
+			$flag1=Insertcardata($conn,$numplate,$brand." ".$model,$mileage,$kms);
+			if($flag && $flag1)
 			{
 				echo "Car with $numplate insertated succesfully.<br>";
 			}
-			else
+			else 
 			{
 				echo "Error Occurred.<br>";
 			}
