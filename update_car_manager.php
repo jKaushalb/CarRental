@@ -14,7 +14,7 @@ include 'gvar.php';
 </head>
 <body>
 <?php 
-	if(isset($_SESSION['role'])&&$_SESSION['role']==1)
+	if(isset($_SESSION['role'])&&$_SESSION['role']==$manager)
 	{
 		?>
 	<form class="box" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']);?>" method="post">
@@ -155,6 +155,7 @@ if(isset($_SERVER['REQUEST_METHOD']))
 	}
 	else
 		echo "you got anothorized access!<br>";
+		header('Location:login.php');
 	?>
 
 </body>

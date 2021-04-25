@@ -112,10 +112,12 @@
     {
         $sql = "SELECT `role` FROM `employees` WHERE `username`='$uname' AND `password` = '$pass'";  //updated
         $result = mysqli_query($conn,$sql);
-        if($result)
+		$flag = mysqli_affected_rows($conn);
+        if($flag)
         {
             echo "Login Successful!<br>";
-			return (int)mysqli_fetch_array($result)[0]; // returning the role;      //updated
+			$flag=mysqli_fetch_array($result)[0];
+			return $flag ; // returning the role;      //updated
         }
         else
         {
@@ -320,24 +322,52 @@
             
         }
     }
-
-    // TO update car data for addcars
-    function Updatecardata($conn,$numberplate,$kms,$stars,$served)
-    {
-        $sql = "UPDATE  `carsadd` set `kms` = '$kms', `stars` = '$stars', `served` = '$served' WHERE `numberplate` = '$numberplate'";
-        $result = mysqli_query($conn,$sql);
+	function getcardata($conn,$numplt)
+	{
+		$sql="SELECT * FROM `carsadd` WHERE `numberplate` = '$numplt' ";
+		$result = mysqli_query($conn,$sql);
         $flag = mysqli_affected_rows($conn);
         if($flag == 1)
         {
-            //return True;
+            return $result;
             echo "The record has been updated successfully!<br>";
         }
         else
         {
-            //return False;
+			echo mysqli_error($conn);
+            return null;
             echo "The record was not updated successfully.<br>";
-            echo mysqli_error($conn);
+            
         }
+	}
+    // TO update car data for addcars
+    function Updatecardata($conn,$numberplate,$kms,$stars)
+    {
+		$d=getcardata($conn,$numberplate);
+		if(isset($d))
+		{
+			$d=mysqli_fetch_assoc($d);
+			$s=$d['served']+1;
+			$st=($d['stars']+$stars)/2;
+			$sql = "UPDATE  `carsadd` set `kms` = '$kms', `stars` = '$st', `served` = '$s' WHERE `numberplate` = '$numberplate'";
+			$result = mysqli_query($conn,$sql);
+			$flag = mysqli_affected_rows($conn);
+			if($flag == 1)
+			{
+				return True;
+				echo "The record has been updated successfully!<br>";
+			}
+			else
+			{
+				return False;
+				echo "The record was not updated successfully.<br>";
+				echo mysqli_error($conn);
+			}
+		}
+		else
+		{
+			return False;
+		}
     }
 
     // To fetch car data for addcars
@@ -381,6 +411,26 @@
 			return null;
 		}
 	}
+	
+	function Deleterentals($conn,$numplate)
+    {
+         $sql = "DELETE FROM `rentals` WHERE `numberplate` = '$numplate'";
+        $result = mysqli_query($conn,$sql);
+        $flag = mysqli_affected_rows($conn);
+       
+        if($flag == 1)
+        {
+            return True;
+            echo "The record has been inserted successfully!<br>";
+        }
+        else
+        {
+            
+           // echo "The record was not inserted successfully.<br>";
+            echo mysqli_error($conn);
+			return False;
+        }
+    }
 	function Givenrentals($conn,$clientname,$clientmobile,$clientlicense,$numberplate,$empid,$kms,$dorental,$doreturn,$advance,$total)
     {
         $sql = "INSERT INTO `rentals` (`rentername`, `rentermobile`, `renterlicense`, `numberplate`, `empid`, `kms`, `dorental`, `doreturn`, `advance`, `total`) VALUES ('$clientname', '$clientmobile', '$clientlicense', '$numberplate', '$empid', '$kms', '$dorental', '$doreturn', '$advance', '$total')";
@@ -424,9 +474,9 @@
     }
 
     // To create final bill for rental in billing database
-    function Bill($conn,$billno,$rentername,$rentermobile,$renterlicense,$numberplate,$rentalempid,$returnempid,$rentalkms,$returnkms,$dorental,$doreturn,$doreturnact,$advance,$total,$damage,$finaltotal)
+    function Bill($conn,$rentername,$rentermobile,$renterlicense,$numberplate,$rentalempid,$returnempid,$rentalkms,$returnkms,$dorental,$doreturn,$doreturnact,$advance,$total,$damage,$finaltotal)
     {
-        $sql = "INSERT INTO `billing` (`billno`, `rentername`, `rentermobile`, `renterlicense`, `numberplate`, `rentalempid`, `returnempid`, `rentalkms`, `returnkms`, `dorental`, `doreturn`, `doreturnact`, `advance`, `total`, `damage`, `finaltotal`) VALUES ('$billno','$rentername','$rentermobile','$renterlicense','$numberplate','$rentalempid','$returnempid','$rentalkms','$returnkms','$dorental','$doreturn','$doreturnact','$advance','$total','$damage','$finaltotal')";
+        $sql = "INSERT INTO `billing` ( `rentername`, `rentermobile`, `renterlicense`, `numberplate`, `rentalempid`, `returnempid`, `rentalkms`, `returnkms`, `dorental`, `doreturn`, `doreturnact`, `advance`, `total`, `damage`, `finaltotal`) VALUES ('$rentername','$rentermobile','$renterlicense','$numberplate','$rentalempid','$returnempid','$rentalkms','$returnkms','$dorental','$doreturn','$doreturnact','$advance','$total','$damage','$finaltotal')";
         $result = mysqli_query($conn,$sql);
         $flag = mysqli_affected_rows($conn);
         $sql = "UPDATE `cars` set `rented` = 0 WHERE `numberplate` = '$numberplate'";

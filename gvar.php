@@ -1,7 +1,7 @@
 <?php
 
 $site_name='CAR RENTAL';
-$manager=1;
-$employee=0;
+$manager=2;
+$employee=1;
 
 ?>

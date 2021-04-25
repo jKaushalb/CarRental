@@ -37,22 +37,23 @@ if($_SERVER['REQUEST_METHOD']=='POST')
 			
 			$role=login($conn,$uname,$pass);
 			$ed=eid($conn,$uname,$pass);
-			echo $uname." ".$pass." ".$role." ".$ed."<br>";
-			if($role>=0)
+			//echo $uname." ".$pass." ".$role." ".$ed."<br>";
+			if($role>0)
 			{
 				$_SESSION["role"]=$role;
 				$_SESSION["uname"]=$uname;
 				$_SESSION["pass"]=$pass;
 				$_SESSION['eid']=$ed;
 				
-				if($role==1)
+				//echo $_SESSION['eid'];
+				if($role==2)
 				{
 					CloseCon($conn);
 					sleep(2);//after 2 sec redirection will be happen
 					header ("Location: manager.php");
 					
 				}
-				else
+				else if($role==1)
 				{
 					sleep(2);
 					header ("Location: employee.php");

@@ -108,7 +108,7 @@ include 'gvar.php';
 <body>
 	
 <?php 
-	if(isset($_SESSION['role'])&&$_SESSION['role']==1)
+	if(isset($_SESSION['role'])&&$_SESSION['role']==$manager)
 	{
 		?>
 	  <form class="box" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']);?>" method="post">

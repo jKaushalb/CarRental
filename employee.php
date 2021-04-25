@@ -24,7 +24,7 @@ include 'gvar.php';
 		}
 		else
 		{
-			echo "No data found";
+			//echo "No data found";
 			mysqli_error($conn);
 			return null;
 		}
@@ -75,8 +75,9 @@ include 'gvar.php';
 	
 	<form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']);?>" method="post"> 
 	<button type='submit' name='dis_rent'>Display Rented</button>&nbsp;&nbsp;&nbsp;<input type='text' name='numplt' placeholder="Enter Numberplate " ></input>&nbsp;&nbsp;&nbsp;<button type='submit' name="findcar">FindCar</button>&nbsp;&nbsp;&nbsp;<button type='submit' name="Return" formaction="./billing.php" required>ReturnCar</button>
-		
+	<button type='submit' name='signout'>Signout</button>	
 	</form>
+	
 	</div>
 	
 	
@@ -88,8 +89,10 @@ include 'gvar.php';
 
 <?php
 
+	
 	$conn=OpenCon();
 	$c=1;
+	$rented=-1;
 	$a=display_non_rentedcars($conn);
 	if(isset($_SERVER['REQUEST_METHOD']))
 	{
@@ -100,7 +103,7 @@ include 'gvar.php';
 			{
 				$num=$_REQUEST['numplt'];
 				$a=findcar($conn,$num);
-				$c=0;
+				
 			}
 			else
 			{
@@ -112,7 +115,11 @@ include 'gvar.php';
 			$c=1;
 			$a=display_non_rentedcars($conn);
 		}
-		
+		else if(isset($_REQUEST['signout']))
+		{
+			session_destroy();
+			header("Location:./login.php");
+		}
 		
 	}
 		
@@ -142,7 +149,7 @@ include 'gvar.php';
 			<strong>Description:</strong><br><?php echo $row["description"]; ?><br>
 			
 		&emsp;&emsp;&emsp;
-			<?php if($c==1){?><button ><a href="./insert_user.php?numplate=<?php echo $row['numberplate'] ;?> ">Book Now</button><?php }?></td>
+			<?php if($c==1 && $row['rented']==0){?><button ><a href="./insert_user.php?numplate=<?php echo $row['numberplate'] ;?> ">Book Now</button><?php }?></td>
 			
 			</tr>
 			<br>

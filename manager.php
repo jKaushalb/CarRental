@@ -69,7 +69,7 @@ include 'gvar.php';
 		}
 		else
 		{
-			echo "No data found";
+			//echo "No data found";
 			mysqli_error($conn);
 			return false;
 		}
@@ -102,8 +102,8 @@ include 'gvar.php';
 	<div>
 	
 	<form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']);?>" method="post"> 
-	<button type='submit' name='dis_all'>Display All Cars</button>&nbsp;&nbsp;&nbsp;<button type='submit' name='dis_rent'>Display Non Rented</button>&nbsp;&nbsp;&nbsp;<input type='text' name='numplt' placeholder="Enter Numberplate " ></input>&nbsp;&nbsp;&nbsp;<button type='submit' name="findcar">FindCar</button>
-		
+	<button type='submit' name='dis_all'>Display All Cars</button>&nbsp;&nbsp;&nbsp;<button type='submit' name='dis_rent'>Display Non Rented</button>&nbsp;&nbsp;&nbsp;<input type='text' name='numplt' placeholder="Enter Numberplate " ></input>&nbsp;&nbsp;&nbsp;<button type='submit' name="findcar">FindCar</button>&nbsp;&nbsp;&nbsp;<button type='submit' name="Return" formaction="./billing.php" required>ReturnCar</button>
+	<button type='submit' name='signout'>Signout</button>		
 	</form>
 	</div>
 	
@@ -117,7 +117,7 @@ include 'gvar.php';
 <?php
 
 	$conn=OpenCon();
-	$c=1;
+	$c=1; // for display all cars we will hide book button if $c=0;
 	$a=display_non_rentedcars($conn);
 	if(isset($_SERVER['REQUEST_METHOD']))
 	{
@@ -132,7 +132,7 @@ include 'gvar.php';
 			{
 				$num=$_REQUEST['numplt'];
 				$a=findcar($conn,$num);
-				$c=0;
+				
 			}
 			else
 			{
@@ -143,6 +143,12 @@ include 'gvar.php';
 		{
 			$c=1;
 			$a=display_non_rentedcars($conn);
+		}
+		else if(isset($_REQUEST['signout']))
+		{
+			session_destroy();
+			//header("Location:./login.php");
+			echo "<script> location.replace('./login.php'); </script>";
 		}
 	}
 		
@@ -174,7 +180,7 @@ include 'gvar.php';
 			<button  name="<?php echo "update".$i?>" ><a href="./update_car_manager.php?brand=<?php echo $row['brandname'];?>&model=<?php echo $row['modelname'];?>&numplate=<?php echo $row['numberplate'];?>&price=<?php echo $row['price'];?>&desc=<?php echo urlencode($row['description']); // as it will contain blank spcaces?>">update</a></button>
 			&emsp;<button name="delete" ><a href="./delete_car_manager.php?numplate=<?php echo $row['numberplate'] ;?>">delete</a></button>
 			<br><br>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
-			<?php if($c==1){?><button ><a href="./insert_user.php?numplate=<?php echo $row['numberplate'] ;?> ">Book Now</button><?php }?></td>
+			<?php if($c==1 && $row['rented']==0){?><button ><a href="./insert_user.php?numplate=<?php echo $row['numberplate'] ;?> ">Book Now</button><?php }?></td>
 			
 			</tr>
 			<br>
