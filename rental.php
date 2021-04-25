@@ -1,11 +1,13 @@
 <?php
 session_start();
+
 include 'db_connection.php';
 include 'gvar.php';
 $conn=OpenCon();
 $car="";
 $user="";
 $car_ex="";
+
 ?>
 <html>
 <head>
@@ -17,8 +19,10 @@ $car_ex="";
 </head>
 <body>
 <?php 
-	if(isset($_SESSION['role'])&&($_SESSION['role']==1 || $_SESSION['role']==0 ))
+	if(isset($_SESSION['role'])&&($_SESSION['role']==$manager || $_SESSION['role']==$employee ))
 	{
+		
+	
 		$lno=$_SESSION['licno'];
 		$numplate=$_SESSION['numplate'];
 		
@@ -32,6 +36,9 @@ $car_ex="";
 			$user=mysqli_fetch_assoc($data);
 			$car=mysqli_fetch_assoc($info);
 			$car_ex=mysqli_fetch_array($info1); //fetched as normal array
+			
+			echo "<script> var price = ".$car['price'] ."</script>";
+			
 		}
 		else
 		{
@@ -71,11 +78,11 @@ $car_ex="";
            </div>
            <div class="inputfield">
              <label>Advance</label>
-             <input type="number" name="advance" class="input" required>
+             <input type="number" name="advance" id='Advance' class="input" required>
            </div>
            <div class="inputfield">
              <label>Total</label>
-             <input type="number" name='total' class="input" required>
+             <input type="text" name='total' id='Total' class="input"  readonly>
            </div>
           <div class="inputfield terms">
               <label class="check">
@@ -107,7 +114,15 @@ $car_ex="";
 					
 					echo "Car with $numplate rented Successfullyt to customer with $lno license no.<br>";
 					sleep(3); //after 3 sec redirection will be happen
-					header("Location:manager.php");
+					if($_SESSION['role']==$manager)
+					{
+						header("Location:manager.php");
+					}
+					else if($_SESSION['role']==$employee)
+					{
+						header("Location:employee.php");
+					}
+					
 				}
 				else
 				{
@@ -132,6 +147,40 @@ $car_ex="";
     <script>
         datePickerId2.min = new Date().toISOString().split("T")[0];
         datePickerId.value = new Date().toISOString().split("T")[0];
+		
+		var advance = document.getElementById('Advance');
+		var total = document.getElementById('Total');
+		var dor = document.getElementById('datePickerId2');
+		// finds total rent from two dates
+		dor.addEventListener('input' ,function(){
+		const date1= new Date(document.getElementById('datePickerId').value);
+		const date2= new Date(document.getElementById('datePickerId2').value);
+		const diffTime = Math.abs(date2 - date1);
+		const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
+		total.value= diffDays * price;
+		});
+		
+		// alerts if advance is greater than total
+		advance.addEventListener('input', function(){
+		
+		
+		const date1= new Date(document.getElementById('datePickerId').value);
+		const date2= new Date(document.getElementById('datePickerId2').value);
+		const diffTime = Math.abs(date2 - date1);
+		const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
+		var t = diffDays * price;
+		
+			
+		if(this.value>t)
+		{
+			alert("Advance is greater than total ");
+			this.value=0;
+		}
+		//total.value=total.value-this.value;
+		
+	 
+		} );
+		
     </script>
 	
 	

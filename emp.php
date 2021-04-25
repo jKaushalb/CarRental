@@ -61,7 +61,6 @@
         			array_push($arr,$row);
         			//echo $row['numberplate']."<br>";
         		}
-
         		if(count($arr))
         		{
         			return $arr;
@@ -76,7 +75,7 @@
         	}
         ?>
         <meta charset="utf-8">
-        <title>MANAGER</title>
+        <title>EMPLOYEE</title>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
         <style>
             @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700;800;900&display=swap');
@@ -111,7 +110,7 @@
     </head>
     <body>
         <?php
-            if(isset($_SESSION['role'])&&$_SESSION['role']==$manager)
+            if(isset($_SESSION['role'])&&$_SESSION['role']==$employee)
             {
                 ?>
                 <header>
@@ -121,33 +120,12 @@
                             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
                                 <span class="navbar-toggler-icon"></span>
                             </button>
-                            &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+                            &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+
                             <div class="collapse navbar-collapse" id="navbarNavDropdown">
                                 <ul class="navbar-nav">
                                     <li class="nav-item">
-                                        <a class="nav-link active" aria-current="page" href="./manager.php">HOME</a>
-                                    </li>
-
-                                    <li class="nav-item dropdown">
-                                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                          EMPLOYEE
-                                        </a>
-                                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                            <li><a class="dropdown-item" href="./insert_manager.php">INSERT EMPLOYEE</a></li>
-                                            <li><a class="dropdown-item" href="./delete_manager.php">DELETE EMPLOYEE</a></li>
-                                            <li><a class="dropdown-item" href="./promote_manager.php">PROMOTE EMPLOYEE</a></li>
-                                            <li><a class="dropdown-item" href="./update_manager.php">UPDATE PASSWORD</a></li>
-                                        </ul>
-                                    </li>
-                                    <li class="nav-item dropdown">
-                                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                          CAR
-                                        </a>
-                                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                            <li><a class="dropdown-item" href="./insert_car_manager.php">INSERT CAR</a></li>
-                                            <li><a class="dropdown-item" href="./update_car_manager.php">UPDATE CAR</a></li>
-                                            <li><a class="dropdown-item" href="./delete_car_manager.php">DELETE CAR</a></li>
-                                        </ul>
+                                        <a class="nav-link active" aria-current="page" href="./emp.php">HOME</a>
                                     </li>
                                 </ul>
                             </div>
@@ -239,8 +217,7 @@
                                     </td>
                                     <td>
                                         <div class="btn-group me-2" role="group" aria-label="Second group">
-                                            <button class="btn btn-warning rounded" name="<?php echo "update".$i?>" ><a href="./update_car_manager.php?brand=<?php echo $row['brandname'];?>&model=<?php echo $row['modelname'];?>&numplate=<?php echo $row['numberplate'];?>&price=<?php echo $row['price'];?>&desc=<?php echo urlencode($row['description']); // as it will contain blank spcaces?>">Update</a></button>&emsp;
-                                            <button class="btn btn-danger rounded" name="delete" ><a href="./delete_car_manager.php?numplate=<?php echo $row['numberplate'] ;?>">Delete</a></button>&emsp;
+
                                             <?php
                                                 if($c==1 && $row['rented']==0)
                                                 {
@@ -271,6 +248,12 @@
            else
                 echo "You got unauthorized access!<br>";
         ?>
+        <script type='text/javascript'>
+            logout()
+            {
+                window.location.href('./Login.php');
+            }
+        </script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js" integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous"></script>
     </body>
 </html>

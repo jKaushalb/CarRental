@@ -11,9 +11,10 @@ body
   background: #ee6c4d;
   padding: 0 10px;
 }
+
 .box 
 {
-  max-width: 850px;
+  max-width: 750px;
   width: 100%;
   position: absolute;
   top: 50%;
@@ -43,7 +44,7 @@ body
 
 .box .form .inputfield
 {
-  margin-bottom: 15px;
+  margin-bottom: 10px;
   display: flex;
   align-items: center;
 }
@@ -53,7 +54,7 @@ body
   width: 200px;
   color: #fff;
   margin-right: 10px;
-  font-size: 18px;
+  font-size: 12px;
 }
 
 .box .form .inputfield .input,
@@ -62,17 +63,15 @@ body
   width: 100%;
   outline: none;
   border: 1px solid #d5dbd9;
-  font-size: 15px;
-  padding: 8px 10px;
+  font-size: 12px;
+  padding: 2px 5px;
   border-radius: 3px;
   transition: all 0.3s ease;
 }
 
 .box .form .inputfield .textarea
 {
-  width: 100%;
-  height: 150px;
-  resize: none;
+  height: 200px;
 }
 
 /*.box .form .inputfield .custom_select
@@ -117,7 +116,7 @@ body
 
 .box .form .inputfield p
 {
-  font-size: 14px;
+  font-size: 12px;
   padding-left: 25px;
   color: #e63946;
 } 
