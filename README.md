@@ -1,5 +1,5 @@
 # CarRental
-An easy car rent management web app
+An easy website for renting and managing cars  
 
 Created By
 Kaushal Jani,
